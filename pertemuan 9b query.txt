@@ -1,0 +1,114 @@
+inner join 2
+MariaDB [dbpenjualan]> select
+    -> f.nofaktur,
+    -> f.tanggal,
+    -> p.namaplg,
+    -> p.kota
+    -> from fakturjual f
+    -> inner join pelanggan p on f.kdplg = p.kdplg;
+
+inner join 3
+MariaDB [dbpenjualan]> select
+    -> j.nofaktur,
+    -> b.namabrg,
+    -> b.harga,
+    -> j.jlhjual
+    -> from penjualan j
+    -> inner join fakturjual f on j.nofaktur = f.nofaktur
+    -> inner join barang b on j.kodebrg = b.kodebrg;
+
+inner join 4
+MariaDB [dbpenjualan]> select
+    -> f.nofaktur,
+    -> f.tanggal,
+    -> p.namaplg,
+    -> b.namabrg,
+    -> b.harga,
+    -> j.jlhjual,
+    -> (b.harga * j.jlhjual) as subtotal
+    -> from fakturjual f
+    -> inner join pelanggan p on f.kdplg = p.kdplg
+    -> inner join penjualan j on f.nofaktur = j.nofaktur
+    -> inner join barang b on j.kodebrg = b.kodebrg
+    -> order by f.nofaktur asc;
+
+left join
+MariaDB [dbpenjualan]> select
+    -> b.kodebrg,
+    -> b.namabrg,
+    -> b.harga
+    -> from barang b
+    -> left join penjualan j on b.kodebrg = j.kodebrg
+    -> where j.nofaktur is null;
+
+inner join 2 pt 2
+MariaDB [dbpenjualan]> select
+    -> f.nofaktur,
+    -> p.namaplg,
+    -> p.kota
+    -> from fakturjual f
+    -> inner join pelanggan p on f.kdplg = p.kdplg;
+
+inner join 3 pt 2
+MariaDB [dbpenjualan]> select
+    -> j.nofaktur,
+    -> b.namabrg,
+    -> b.harga,
+    -> j.jlhjual
+    -> from penjualan j
+    -> inner join fakturjual f on j.nofaktur = f.nofaktur
+    -> inner join barang b on j.kodebrg = b.kodebrg;
+
+inner join 4 pt 2
+MariaDB [dbpenjualan]> select
+    -> f.nofaktur,
+    -> f.tanggal,
+    -> p.namaplg,
+    -> b.namabrg,
+    -> b.harga,
+    -> j.jlhjual,
+    -> (b.harga * j.jlhjual) as subtotal
+    -> from fakturjual f
+    -> inner join pelanggan p on f.kdplg = p.kdplg
+    -> inner join penjualan j on f.nofaktur = j.nofaktur
+    -> inner join barang b on j.kodebrg = b.kodebrg
+    -> order by f.nofaktur asc;
+
+left join nganggur
+MariaDB [dbpenjualan]> select
+    -> b.kodebrg,
+    -> b.namabrg,
+    -> b.harga
+    -> from barang b
+    -> left join penjualan j on b.kodebrg = j.kodebrg
+    -> where j.nofaktur is null;
+
+mengubah logika kiri ke kanan
+MariaDB [dbpenjualan]> select
+    -> p.kdplg,
+    -> p.namaplg,
+    -> f.nofaktur,
+    -> f.tanggal
+    -> from fakturjual f
+    -> right join pelanggan p on f.kdplg = p.kdplg;
+
+scenario bisnis kerusakan data
+MariaDB [dbpenjualan]> select
+    -> f.nofaktur,
+    -> f.tanggal,
+    -> f.kdplg as Kode_Pelanggan_Di_Faktur,
+    -> p.namaplg
+    -> from pelanggan p
+    -> left join fakturjual f on p.kdplg = f.kdplg
+    -> where p.kdplg is null;
+
+contoh refactoring kode
+
+sulit dibaca alurnya
+MariaDB [dbpenjualan]> select * from penjualan j
+    -> right join barang b on j.kodebrg = b.kodebrg;
+
+alur baca yang natural
+MariaDB [dbpenjualan]> select * from barang b
+    -> left join penjualan j on b.kodebrg = j.kodebrg;
+

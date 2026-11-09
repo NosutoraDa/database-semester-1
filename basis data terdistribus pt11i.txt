@@ -1,0 +1,91 @@
+basis data terdistribusi
+
+fragmentasi
+
+membuat dan menggunakan db_fragmentasi
+MariaDB [(none)]> create database db_fragmentasi
+MariaDB [(none)]> use db_fragmentasi;
+
+membuat table mahasiswa
+MariaDB [db_fragmentasi]> create table mahasiswa (
+    -> nim int(10) primary key,
+    -> nama varchar(50),
+    -> prodi varchar(30),
+    -> kota varchar(30)
+    -> );
+
+mengisi table mahasiswa
+MariaDB [db_fragmentasi]> insert into mahasiswa values
+    -> (001,'Arif','Teknik Elektro','Samarinda'),
+    -> (002,'Andrian','Teknik Komputer','Samarinda'),
+    -> (003,'Suryana','Manajemen Bisnis','Balikpapan'),
+    -> (004,'Takim','Sastra Inggris','Balikpapan'),
+    -> (005,'Ecak','Teknologi Rekayasa Komputer','Samarinda');
+
+fragmentasi horizontal
+
+mahasiswa samarinda
+MariaDB [db_fragmentasi]> create table mahasiswa_Samarinda as
+    -> select * from mahasiswa
+    -> where kota ='Samarinda';
+
+MariaDB [db_fragmentasi]> select * from mahasiswa_samarinda;
+
+mahasiswa Balikpapan
+MariaDB [db_fragmentasi]> create table mahasiswa_Balikpapan as
+    -> select * from mahasiswa
+    -> where kota ='Balikpapan';
+
+MariaDB [db_fragmentasi]> select * from mahasiswa_Balikpapan;
+
+fragmentasi vertical
+
+mahasiswa identitas
+MariaDB [db_fragmentasi]> create table mahasiswa_identitas as
+    -> select nim,nama from mahasiswa;
+
+MariaDB [db_fragmentasi]> select * from mahasiswa_identitas;
+
+mahasiswa akademik
+MariaDB [db_fragmentasi]> create table mahasiswa_akademik as
+    -> select prodi,kota from mahasiswa;
+
+MariaDB [db_fragmentasi]> select * from mahasiswa_akademik;
+
+replikasi
+
+create user arif dan memberi permission replikasi serta flush privileges
+MariaDB [(none)]> create user 'arif'@'%' identified by '12345';
+
+MariaDB [(none)]> grant replication slave on *.* to 'arif'@'%';
+
+MariaDB [(none)]> flush privileges;
+
+membuat db_replikasi
+MariaDB [(none)]> create database db_replikasi;
+MariaDB [(none)]> use db_replikasi;
+
+pada slave ketikkan
+mysqld --defaults-file="D:\xampp\mysql_slave\bin\my.ini"
+
+memulai slave
+
+MariaDB [(none)]> STOP SLAVE;
+
+MariaDB [(none)]> CHANGE MASTER TO
+    ->   MASTER_HOST='127.0.0.1',
+    ->   MASTER_PORT=3306,
+    ->   MASTER_USER='arif',
+    ->   MASTER_PASSWORD='12345',
+    ->   MASTER_LOG_FILE='mysql-bin.000001',
+    ->   MASTER_LOG_POS=154;
+
+MariaDB [(none)]> start slave;
+
+melihat status slave
+MariaDB [(none)]> show slave status\G
+
+menggunakan db_replikasi
+MariaDB [(none)]> use db_replikasi;
+
+

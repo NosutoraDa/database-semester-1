@@ -1,0 +1,91 @@
+kasus 1 laporan Riwayat transaksi
+
+Bagian administrasi ingin melihat rangkuman faktur yang telah diterbitkan beserta identitas pembelinya, namun mereka tidak ingin melihat kode pelanggan.
+
+Tugas: Tuliskan kueri menggunakan INNER JOIN untuk menampilkan kolom: NoFaktur, Tanggal, NamaPlg, dan Kota. Urutkan hasil berdasarkan Tanggal dari yang paling lama ke yang paling baru.
+
+analisis logika
+
+pertama tama yang di cari tabelnya, dalam kasus ini table yg di pakai yaitu table pelanggan dan table fakturjual, dengan foreign key dari kolom kdplg yang ada di kedua table, lalu
+select query query sesuai di tugas dan kolom kdplg untuk menggunakan inner join antara dua table lalu di urut kan menggunakan order by asc
+
+query: 
+
+MariaDB [dbpenjualan]> select
+    -> f.nofaktur,
+    -> f.tanggal,
+    -> p.namaplg,
+    -> p.kota
+    -> from fakturjual f
+    -> inner join pelanggan p on f.kdplg = p.kdplg
+    -> order by f.tanggal asc;
+
+kasus 2
+
+Kasir perlu mencetak rincian barang untuk Faktur dengan nomor tertentu (misalnya faktur 'F-001').
+
+Tugas: Tuliskan kueri INNER JOIN (melibatkan 3 tabel) untuk menampilkan kolom: NoFaktur, NamaBrg, Harga, JlhJual, dan SubTotal (didapat dari perkalian Harga dengan JlhJual). Filter hasil kueri hanya untuk faktur bernomor 'F-001'.
+
+analisis logika
+
+pertama dikasus ini menggunakan 3 yaitu fakturjual, barang dan penjualan, lalu menggunakan subquery untuk menggunakan perkalian dan dijadikan subtotal menggunakan as, sisanye menggunakan inner join nofaktur di table fakturjual dan penjualan, satulagi menggunakan kodebrg di table penjualan dan barang dimana nofaktur hanya menampilkan 'FKR001' bukan 'F-001' karena nofaktur saya menggunakan format FKR lalu nomor
+
+query: 
+
+MariaDB [dbpenjualan]> select
+    -> f.nofaktur,
+    -> b.namabrg,
+    -> b.harga,
+    -> j.jlhjual,
+    -> (b.harga * j.jlhjual) as Subtotal
+    -> from fakturjual f
+    -> inner join penjualan j on f.nofaktur = j.nofaktur
+    -> inner join barang b on j.kodebrg = b.kodebrg
+    -> where f.nofaktur = 'FKR001';
+
+kasus 3
+
+Tim promosi memiliki anggaran terbatas dan hanya ingin mengirimkan SMS voucher diskon kepada pelanggan yang sama sekali belum pernah berbelanja sejak mereka mendaftar.
+
+Tugas: Tuliskan kueri menggunakan kombinasi LEFT JOIN atau RIGHT JOIN dan klausa IS NULL untuk menampilkan kolom: KdPlg, NamaPlg, dan NoHp KHUSUS untuk pelanggan yang tidak memiliki riwayat di tabel FakturJual.
+
+analisis logika
+
+pertama ini menggunakan 2 table yaitu pelanggan dan fakturjual, menggunakan left join kdplg dari table fakturjual dan pelanggan dimana kdplg itu null atau tidak ada fakturjual.kdplg
+
+query:
+
+MariaDB [dbpenjualan]> select
+    -> p.kdplg,
+    -> p.namaplg,
+    -> p.nohp
+    -> from pelanggan p
+    -> left join fakturjual f on p.kdplg = f.kdplg
+    -> where f.kdplg is null;
+
+kasus 4
+
+Manajer Toko ingin memberikan reward kepada 3 pelanggan VIP yang menghabiskan uang paling banyak di toko tersebut.
+
+Tugas: Gabungkan keempat tabel yang ada. Gunakan fungsi SUM(), klausa GROUP BY, dan ORDER BY ... DESC LIMIT 3 untuk menampilkan kolom:
+1.	NamaPlg
+2.	Total_Belanja_Rupiah (Hasil penjumlahan dari Harga * JlhJual)
+
+analisis logika
+
+pertama mengaliaskan namaplg dan menggunakan sum untuk mengkalikan Harga dengan jumlah jual, lalu menghubungkan 4 table menggunakan innter join sesuai foreign key masing masing, agar bisa mengambil datanya lalu dikelompokkan berdasarkan kdplg dan namaplg dan di order descending, dari terbesar hingga terkecil dan dibatasi jadi 3
+
+query:
+
+MariaDB [dbpenjualan]> select
+    -> p.namaplg as Namaplg,
+    -> sum(b.harga * j.jlhjual) as Total_Belanja_Rupiah
+    -> from pelanggan p
+    -> inner join fakturjual f on p.kdplg = f.kdplg
+    -> inner join penjualan j on f.nofaktur = j.nofaktur
+    -> inner join barang b on j.kodebrg = b.kodebrg
+    -> group by p.kdplg, p.namaplg
+    -> order by Total_Belanja_Rupiah DESC
+    -> limit 3;
+
+

@@ -1,0 +1,90 @@
+[{
+  "_id": {
+    "$oid": "6adea9e8b6eeb2f375c0802a"
+  },
+  "judul": "Sistem Basis Data Terdistribusi",
+  "penulis": "Rina Wijaya",
+  "tahun_terbit": 2023,
+  "kategori": "Ilmu Komputer",
+  "stok": 25,
+  "status_diskon": true
+},
+{
+  "_id": {
+    "$oid": "6adeab8ab6eeb2f375c0802b"
+  },
+  "judul": "Pengantar Machine Learning",
+  "penulis": "Ariful Cahyo",
+  "tahun_terbit": 2024,
+  "kategori": "Artificial Intellegence",
+  "stok": 20
+},
+{
+  "_id": {
+    "$oid": "6adeab8ab6eeb2f375c0802c"
+  },
+  "judul": "How to Summon PC Builder Tech Tips",
+  "penulis": "Dimas Rizz Maxxing",
+  "tahun_terbit": 2026,
+  "kategori": "Sacrificial",
+  "stok": 30
+},
+{
+  "_id": {
+    "$oid": "6adeaea5b6eeb2f375c0802d"
+  },
+  "judul": "Dokumen Asli PACE Merdeka",
+  "penulis": "Prabowo",
+  "kategori_tag": [
+    "Indonesia Republik",
+    "Korupsi",
+    "Papua Merdeka",
+    "Jawa"
+  ],
+  "penerbit": {
+    "nama_perusahaan": "Pendukung Trump",
+    "kota": "Merauke",
+    "tahun_berdiri": 2020
+  },
+  "daftar_ulasan": [
+    {
+      "pengguna": "Arif",
+      "rating": 0,
+      "komentar": "Akal akalan Buzzer ini!!"
+    },
+    {
+      "pengguna": "Ecak",
+      "rating": 5,
+      "komentar": "Absolute Cinema!! Hidup PACE yang Melawan!!"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "6adeb025b6eeb2f375c0802e"
+  },
+  "judul": "MBG Bermanfaat",
+  "penulis": "Buzzer Prabowo",
+  "kategori_tag": [
+    "Indonesia",
+    "Korupsi",
+    "Pendukung MBG"
+  ],
+  "spesifikasi": {
+    "jumlah_halaman": "999",
+    "edisi": "MBG",
+    "kode_buku": "6967-42069-67-21"
+  },
+  "lokasi_doksli": [
+    {
+      "buzzer": "Netanyahu",
+      "lokasii": "Mexico",
+      "harga_buzzer": 1500000
+    },
+    {
+      "buzzer": "Tel Aviv",
+      "lokasi": "US",
+      "harga_buzzer": 20000
+    }
+  ]
+}]

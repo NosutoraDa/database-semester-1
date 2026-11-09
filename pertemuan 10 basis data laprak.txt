@@ -1,0 +1,70 @@
+pertemuan 10 basis data
+
+bab 11
+
+membuat view
+MariaDB [db_perusahaan]> create view info_umum as
+    -> select nip,nama,tgl_lahir
+    -> from infoprib;
+
+mengubah view
+MariaDB [db_perusahaan]> alter view info_umum as
+    -> select nip, nama, sex
+    -> from infoprib;
+
+membuat view dari sejumlah table
+MariaDB [db_perusahaan]> create view info_peg as
+    -> select i.nip, i.nama, b.nama_bag
+    -> from infoprib i, pekerjaan p, bagian b
+    -> where i.nip = p.nip and
+    -> p.kode_bag = b.kode_bag;
+
+menghapus view
+MariaDB [db_perusahaan]> drop view info_peg;
+
+bab 12
+menciptakan prosedur tersimpan
+MariaDB [db_perusahaan]> delimiter !
+MariaDB [db_perusahaan]> create procedure jumpeg()
+    -> begin
+    -> select count(*) as 'Jumlah Pegawai'
+    -> from infoprib;
+    -> END
+    -> !
+
+untuk menjalankan prosedur
+MariaDB [db_perusahaan]> call jumpeg();
+    -> !
+
+menciptakan fungsi tersimpan
+MariaDB [db_perusahaan]> create function
+    -> hobi(hobi1 varchar(40),hobi2 varchar(40),hobi3 varchar(40),hobi4 varchar(40))
+    -> returns varchar(200)
+    -> begin
+    -> return concat('Saya memiliki hobi sebagai berikut
+       ',hobi1,',',hobi2,',',hobi3,' dan ',hobi4);
+    -> end;
+    -> !
+
+menjalankan fungsi menggunakan select namafungsi
+MariaDB [db_perusahaan]> select hobi('Sepeda','Travelling','Baca','Beranang')!
+
+memperolah informasi prosedur dan fungsi
+MariaDB [db_perusahaan]> show procedure!
+
+menampilkan informasi yg tersimpan
+MariaDB [db_perusahaan]> show procedure status like 'j%'!
+
+MariaDB [db_perusahaan]> show function status!
+
+MariaDB [db_perusahaan]> show function status like '%i'!
+
+menghapus function dan procedure
+
+MariaDB [db_perusahaan]> drop procedure if exists jumpeg !
+
+MariaDB [db_perusahaan]> drop function if exists hobi !
+
+
+
+

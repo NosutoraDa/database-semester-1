@@ -1,0 +1,163 @@
+mongo db praktek
+
+melihat database
+
+show databases;
+
+membuat dan memakai db buku
+
+use buku
+
+mencari db buku
+
+db.buku.find()
+
+menambah 1 dokumen
+
+db.buku.insertOne({
+  judul:"Sistem Basis Data Terdistribusi",
+  penulis:"Rina Wijaya",
+  tahun_terbit:2023,
+  kategori:"Ilmu Komputer",
+  stok:25
+})
+
+menambahkan many dokumen
+
+db.buku.insertMany([
+  {
+    judul:"Pengantar Machine Learning",
+    penulis:"Ariful Cahyo",
+    tahun_terbit:2024,
+    kategori:"Artificial Intellegence",
+    stok:15
+  },
+  {
+    judul:"How to Summon PC Builder Tech Tips",
+    penulis:"Dimas Rizz Maxxing",
+    tahun_terbit:2026,
+    kategori:"Sacrificial",
+    stok:67
+  }
+])
+
+menambahkan nested dokumen
+
+db.buku.insertOne({
+  judul:"Dokumen Asli PACE Merdeka",
+  penulis:"Prabowo",
+  
+  //1.kumpulan nilai array
+  kategori_tag:["Indonesia","Korupsi","Papua Merdeka"],
+
+  //2.Embedded Document(Nested)
+  penerbit:{
+    nama_perusahaan:"Pendukung Trump",
+  	kota:"Merauke",
+  	tahun_berdiri:2020
+  },
+  
+  //3.Contoh Array of Documents(Array yang berisi object)
+  daftar_ulasan:[
+    { pengguna:"Arif", rating:0, komentar:"Akal akalan Netanyahu"},
+    { pengguna:"Ecak", rating:5, komentar:"Absolute Cinema!! Hidup PACE yang Melawan!!"}
+  ]
+})
+
+menambahkan nested dokumen pt2
+
+db.buku.insertOne({
+  judul:"MBG Bermanfaat",
+  penulis:"Buzzer Prabowo",
+  
+  //1.kumpulan Array string
+  kategori_tag:["Indonesia","Korupsi","Pendukung MBG"],
+
+  //2.Embedded Document(Nested)
+  spesifikasi:{
+    jumlah_halaman:"999",
+  	edisi:"MBG",
+  	kode_buku:"6967-42069-67-21"
+  },
+  
+  //3.Contoh Array of Documents(Array yang berisi object)
+  lokasi_doksli:[
+    { buzzer:"Netanyahu", lokasii:"Mexico", harga_buzzer:1500000},
+    { buzzer:"Tel Aviv", lokasi:"US", harga_buzzer:20000}
+  ]
+})
+
+memperbarui 1 document
+
+db.buku.updateOne(
+  {judul:"How to Summon PC Builder Tech Tips"},
+  {$set:{stok:30}}
+)
+
+memperbarui many document
+
+db.buku.updateMany(
+  {tahun_terbit:{$lt:2024}},
+  {$set:{status_diskon:true}}
+)
+
+memperbarui nilai array spesifik
+
+db.buku.updateOne(
+  {kategori_tag:"Indonesia"},
+  {$set:{"kategori_tag.$":"Indonesia Republik"}}
+)
+
+memperbarui nilai spesifik
+
+db.buku.updateOne(
+  {"daftar_ulasan.pengguna":"Arif"},
+  {$set:{"daftar_ulasan.$.komentar":"Akal akalan Buzzer ini!!"}}
+)
+
+menampilkan semua dokumen
+
+db.buku.find()
+
+menampilkan dokumen yang memiliki buzzer netanyahu
+
+db.buku.find({"lokasi_doksli.buzzer":"Netanyahu"})
+
+menampilkan dokumen kriteria spesifik
+
+db.buku.find({kategori:"Ilmu Komputer"})
+
+operator perbandingan $gt
+
+db.buku.find({stok:{$gt:20}})
+
+operator logika $or
+
+db.buku.find({
+  $or:[
+    {kategori:"Sacrificial"},
+    {tahun_terbit:2026}
+  ]
+})
+
+operator pembaruan $inc
+
+db.buku.updateOne(
+ {judul:"Sistem Basis Data Terdistribusi"},
+ {$inc:{stok:5}}
+)
+
+operator array $push
+
+db.buku.updateOne(
+  {judul:"Dokumen Asli PACE Merdeka"},
+  {$push:{kategori_tag:"Jawa"}}
+)
+
+operator elemen
+
+db.buku.find({status_diskon:{$exists:true}})
+
+menghapus dokumen di mongodb
+
+db.buku.deleteOne({judul:"Pengantar Machine Learning"})
